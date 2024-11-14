@@ -18,7 +18,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="8dp"
-        android:background="#e0f7e0"
+        android:background="@color/menu"
         android:padding="8dp"/>
 
     <!-- Descripción de la pantalla -->

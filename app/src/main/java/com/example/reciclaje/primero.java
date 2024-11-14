@@ -18,8 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.List;
 
 public class primero extends Fragment {
-    private static final String BASE_URL = "https://newsapi.org/"; // URL base de la API
-    private static final String API_KEY = "e02f52d94639422d945bef64137a669e"; // Reemplaza con tu API key de NewsAPI
+    private static final String BASE_URL = "https://newsapi.org/";
+    private static final String API_KEY = "e02f52d94639422d945bef64137a669e"; // Coloca tu clave de API de NewsAPI aquí
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,8 +37,7 @@ public class primero extends Fragment {
 
         NewsApiService apiService = retrofit.create(NewsApiService.class);
 
-        // Obtener noticias en español relacionadas con el medio ambiente
-        Call<NewsResponse> call = apiService.getEnvironmentalNews("environment", API_KEY, "es");
+        Call<NewsResponse> call = apiService.getEnvironmentalNews("pollution", API_KEY, "es");
         call.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
@@ -59,59 +58,46 @@ public class primero extends Fragment {
         LinearLayout layoutNoticias = view.findViewById(R.id.layout_noticias);
 
         for (NewsArticle noticia : noticias) {
-            // Crear un CardView para cada noticia
             CardView cardView = new CardView(getContext());
-
-            // Establecer parámetros para el CardView
             CardView.LayoutParams params = new CardView.LayoutParams(
                     CardView.LayoutParams.MATCH_PARENT,
                     CardView.LayoutParams.WRAP_CONTENT
             );
             cardView.setLayoutParams(params);
+            cardView.setCardElevation(8f);
+            cardView.setRadius(16f);
+            cardView.setCardBackgroundColor(getResources().getColor(android.R.color.white));
 
-            // Configurar propiedades del CardView
-            cardView.setCardElevation(8f); // Agrega sombra
-            cardView.setRadius(16f); // Bordes redondeados
-            cardView.setCardBackgroundColor(getResources().getColor(android.R.color.white)); // Fondo blanco
-
-            // Crear un LinearLayout dentro del CardView para agregar la imagen y el texto
             LinearLayout linearLayout = new LinearLayout(getContext());
             linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.setPadding(16, 16, 16, 16); // Espaciado dentro del CardView
+            linearLayout.setPadding(16, 16, 16, 16);
 
-            // Crear el ImageView para mostrar la imagen de la noticia
             ImageView imageView = new ImageView(getContext());
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    400 // Altura de la imagen, ajusta según lo necesario
+                    400
             );
             imageView.setLayoutParams(imageParams);
 
-            // Cargar la imagen desde la URL utilizando Glide
             Glide.with(this).load(noticia.getUrlToImage()).into(imageView);
 
-            // Crear el TextView para el título de la noticia
             TextView titulo = new TextView(getContext());
             titulo.setText(noticia.getTitle());
             titulo.setTextSize(18f);
             titulo.setTextColor(getResources().getColor(android.R.color.black));
 
-            // Agregar el ImageView y el título al LinearLayout
             linearLayout.addView(imageView);
             linearLayout.addView(titulo);
 
-            // Agregar el LinearLayout al CardView
             cardView.addView(linearLayout);
 
-            // Establecer márgenes para separar los CardViews
             LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            cardParams.setMargins(0, 0, 0, 16); // Margen inferior de 16dp
+            cardParams.setMargins(0, 0, 0, 16);
             cardView.setLayoutParams(cardParams);
 
-            // Agregar el CardView al layout principal
             layoutNoticias.addView(cardView);
         }
     }
