@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ccffcc"
+    android:padding="16dp"
+    tools:context=".tercero">
+
+    <!-- Texto de encabezado -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Haz Tu Donación"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="#e0f7e0"
+        android:padding="8dp"/>
+
+    <!-- Imagen del corazón en una mano -->
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/donaciones"
+        android:layout_gravity="center"
+        android:contentDescription="Imagen de donación"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Botones de Donar y Ver Más -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DONAR"
+            android:backgroundTint="#b19cd9"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="16dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver Más"
+            android:backgroundTint="#a5a1d9"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+    <!-- Barra de navegación inferior -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#ccffcc"
+        />
+</LinearLayout>
