@@ -5,116 +5,120 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondo"
-    android:orientation="vertical"
     tools:context=".cuarto">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <!-- Encabezado fijo en la parte superior -->
+    <TextView
+        android:id="@+id/textViewHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:text="BIENVENIDOS!!"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"
         android:background="@color/menu"
-        tools:ignore="MissingConstraints,VisualLintBounds">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/textView"
+    <!-- ScrollView para el contenido con botones e información adicional -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="115dp"
+        app:layout_constraintTop_toBottomOf="@id/textViewHeader"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="BIENVENIDOS!!"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="HardcodedText,SpUsage" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Botón para mostrar información sobre reciclaje -->
+            <Button
+                android:id="@+id/buttonReciclaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/menu"
+                android:text="¿Qué es Reciclaje?"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:onClick="toggleReciclaje" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/menu"
+            <!-- El TextView estará visible una vez se haga clic en el botón -->
+            <TextView
+                android:id="@+id/textoReciclaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Información sobre Reciclaje"
+                android:textColor="@color/black"
+                android:visibility="gone" />
 
-        android:text=" Mi Cuenta"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:onClick="micuenta"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        tools:ignore="MissingConstraints" />
+            <!-- Botón para mostrar información sobre las 3R -->
+            <Button
+                android:id="@+id/buttonTresR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/menu"
+                android:text="¿Qué son las 3R?"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:onClick="toggleTresR" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="31dp"
-        android:backgroundTint="@color/menu"
+            <!-- El TextView estará visible una vez se haga clic en el botón -->
+            <TextView
+                android:id="@+id/textoTresR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Información sobre las 3R"
+                android:textColor="@color/black"
+                android:visibility="gone" />
 
-        android:shadowColor="#474545"
-        android:text=" Quienes Somos?"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:onClick="qiene"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        tools:ignore="HardcodedText,MissingConstraints,RtlHardcoded,SpUsage,VisualLintButtonSize" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/menu"
+            <Button
+                android:id="@+id/buttonBeneficiosReciclar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/menu"
+                android:text="Beneficios de reciclar"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:onClick="toggleBeneficiosReciclar" />  <!-- Método asociado -->
 
-        android:shadowColor="#474545"
-        android:text=" Acerca de Nosotros"
-        android:onClick="acerca"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        tools:ignore="HardcodedText,MissingConstraints,VisualLintButtonSize,TextSizeCheck" />
+            <TextView
+                android:id="@+id/textoBeneficiosReciclar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/black"
+                android:visibility="gone" /> <!-- Inicialmente oculto -->
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="348dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="31dp"
-        android:backgroundTint="@color/menu"
-        android:onClick="cerrar"
-        android:shadowColor="#474545"
-        android:text=" Cerrar Sesion"
-        android:textAlignment="textStart"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1"
-        tools:ignore="HardcodedText,MissingConstraints,RtlHardcoded,SpUsage,TextSizeCheck,VisualLintButtonSize" />
+            <Button
+                android:id="@+id/buttonCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/menu"
+                android:text="Cerrar Sesión"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/cerrar"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:onClick="cerrar"/>
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

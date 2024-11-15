@@ -37,7 +37,10 @@ public class primero extends Fragment {
 
         NewsApiService apiService = retrofit.create(NewsApiService.class);
 
-        Call<NewsResponse> call = apiService.getEnvironmentalNews("pollution", API_KEY, "es");
+        // Consulta en NewsAPI para temas específicos de contaminación en El Salvador
+        String consulta = "contaminación ambiental OR tala de árboles OR deforestación OR crisis ambiental";
+
+        Call<NewsResponse> call = apiService.getEnvironmentalNews(consulta, API_KEY, "es");
         call.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
@@ -57,7 +60,28 @@ public class primero extends Fragment {
     private void mostrarNoticias(List<NewsArticle> noticias, View view) {
         LinearLayout layoutNoticias = view.findViewById(R.id.layout_noticias);
 
+        // Mostrar solo las primeras 10 noticias que no contengan palabras clave no deseadas
+        int maxNoticias = 10;
+        int noticiasMostradas = 0;
+
         for (NewsArticle noticia : noticias) {
+            // Verificar si el título contiene palabras no deseadas
+            String tituloNoticia = noticia.getTitle();
+            if (tituloNoticia != null && (tituloNoticia.toLowerCase().contains("hoy no circula") ||
+                    tituloNoticia.toLowerCase().contains("sabatino") ||
+                    tituloNoticia.toLowerCase().contains("ia") ||
+                    tituloNoticia.toLowerCase().contains("político") ||
+                    tituloNoticia.toLowerCase().contains("atún") ||
+                    tituloNoticia.toLowerCase().contains("tribunal") ||
+                    tituloNoticia.toLowerCase().contains("[removed]"))) {
+                continue; // Omitir esta noticia si contiene palabras clave no deseadas
+            }
+
+            // Mostrar la noticia solo si el límite no ha sido alcanzado
+            if (noticiasMostradas >= maxNoticias) {
+                break;
+            }
+
             CardView cardView = new CardView(getContext());
             CardView.LayoutParams params = new CardView.LayoutParams(
                     CardView.LayoutParams.MATCH_PARENT,
@@ -82,7 +106,7 @@ public class primero extends Fragment {
             Glide.with(this).load(noticia.getUrlToImage()).into(imageView);
 
             TextView titulo = new TextView(getContext());
-            titulo.setText(noticia.getTitle());
+            titulo.setText(tituloNoticia);
             titulo.setTextSize(18f);
             titulo.setTextColor(getResources().getColor(android.R.color.black));
 
@@ -99,6 +123,8 @@ public class primero extends Fragment {
             cardView.setLayoutParams(cardParams);
 
             layoutNoticias.addView(cardView);
+
+            noticiasMostradas++;
         }
     }
 }
