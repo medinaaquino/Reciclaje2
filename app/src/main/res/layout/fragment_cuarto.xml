@@ -7,12 +7,14 @@
     android:background="@color/fondo"
     tools:context=".cuarto">
 
+
+
     <!-- Encabezado fijo en la parte superior -->
     <TextView
         android:id="@+id/textViewHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="BIENVENIDOS!!"
+        android:text="INFORMACION SOBRE EL RECICLAJE!!"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -22,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
     <!-- ScrollView para el contenido con botones e información adicional -->
     <ScrollView

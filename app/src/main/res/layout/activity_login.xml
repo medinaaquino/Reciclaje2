@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/login"
+    android:background="@color/fondo"
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
@@ -101,20 +101,24 @@
         </LinearLayout>
 
 
-
     </androidx.cardview.widget.CardView>
 
-
-    <TextView
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Sign up NOW"
-        android:textSize="14sp"
-        android:textAlignment="center"
-        android:textColor="@color/menu"
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/menu"
         android:onClick="regitrarse"
-        android:layout_marginBottom="20dp"/>
+        android:text="Registrarse"
+        android:textSize="18sp"
+        app:backgroundTint="@null"
+        app:cornerRadius="20dp" />
+
+
+
+
+
+
 
 
 

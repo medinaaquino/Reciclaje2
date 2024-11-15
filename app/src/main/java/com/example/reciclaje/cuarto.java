@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,13 +151,23 @@ public class cuarto extends Fragment {
     }
 
     public void cerrar(View view) {
-        Intent intent = new Intent(this, login.class);
-        startActivity(intent);
+        // Verifica que la actividad esté disponible
+        if (getActivity() != null) {
+            // Inicia la actividad Login
+            Intent intent = new Intent(getActivity(), login.class);
+            startActivity(intent);
 
-        finish();
-
+            // Si deseas cerrar la actividad actual, asegúrate de hacerlo de manera segura
+            getActivity().finish();
+        } else {
+            // Si getActivity() es null, puedes manejarlo de otra manera (por ejemplo, loguear el error o hacer algo diferente)
+            Log.e("Cerrar", "La actividad no está disponible.");
+        }
     }
 
+
 }
+
+
 
 
