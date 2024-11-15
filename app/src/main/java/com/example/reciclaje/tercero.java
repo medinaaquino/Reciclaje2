@@ -1,64 +1,124 @@
 package com.example.reciclaje;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link tercero#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
+
 public class tercero extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    EditText edtAmount;
+    Button btnPayment;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public tercero() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment tercero.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static tercero newInstance(String param1, String param2) {
-        tercero fragment = new tercero();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    String clientId = "AY_kB5RquYiaAJU1TXKK3aSGe-EYTODhQ2V14S5e7pCAzJIZ6RPAOgVG1xOxcg3ttvYZQO3ykhNedx_V";
+    int PAYPAL_REQUEST_CODE = 123;
+    public static PayPalConfiguration configuration;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        // Configura PayPal
+        configuration = new PayPalConfiguration()
+                .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+                .clientId(clientId);
+
+        // Inicia el servicio de PayPal
+        Intent intent = new Intent(getActivity(), PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
+        getActivity().startService(intent);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_tercero, container, false);
+
+        edtAmount = view.findViewById(R.id.edtAmount);
+        btnPayment = view.findViewById(R.id.btnPayment);
+
+        btnPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPayment();
+            }
+        });
+
+        return view;
+    }
+
+    private void getPayment() {
+        String amounts = edtAmount.getText().toString();
+
+        // Verifica que el monto no esté vacío antes de proceder
+        if (amounts.isEmpty()) {
+            Toast.makeText(getActivity(), "Por favor, ingrese una cantidad", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            BigDecimal amount = new BigDecimal(amounts);
+            PayPalPayment payment = new PayPalPayment(amount, "USD", "Donación", PayPalPayment.PAYMENT_INTENT_SALE);
+
+            Intent intent = new Intent(getActivity(), PaymentActivity.class);
+            intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
+            intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+            startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+        } catch (NumberFormatException e) {
+            Toast.makeText(getActivity(), "Cantidad no válida", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tercero, container, false);
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                PaymentConfirmation paymentConfirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+
+                if (paymentConfirmation != null) {
+                    try {
+                        String paymentDetails = paymentConfirmation.toJSONObject().toString(4);
+                        JSONObject object = new JSONObject(paymentDetails);
+                        Toast.makeText(getActivity(), "Pago exitoso", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), "Error procesando el pago: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "Pago cancelado", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Toast.makeText(getActivity(), "Pago inválido, por favor intente de nuevo", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        // Detiene el servicio de PayPal al destruir el Fragment
+        getActivity().stopService(new Intent(getActivity(), PayPalService.class));
+        super.onDestroy();
     }
 }
