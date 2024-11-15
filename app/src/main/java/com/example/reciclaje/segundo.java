@@ -53,12 +53,28 @@ public class segundo extends Fragment {
         GeoPoint startPoint = new GeoPoint(13.9946, -89.5596); // Punto inicial en Santa Ana
         mapController.setCenter(startPoint);
 
-        // Agregar ubicaciones con tus íconos personalizados
-        addMarker(new GeoPoint(13.9946, -89.5596), "Parque Libertad");
-        addMarker(new GeoPoint(13.9916, -89.5604), "Catedral de Santa Ana");
-        addMarker(new GeoPoint(13.9992, -89.5581), "Teatro de Santa Ana");
-        addMarker(new GeoPoint(13.9940, -89.5613), "Museo Regional de Occidente");
-        addMarker(new GeoPoint(13.9852, -89.5649), "UES - Facultad Multidisciplinaria Occidental");
+
+        addMarker(new GeoPoint(13.977964, -89.565788), "Depósito de Basura");
+
+
+        addMarker(new GeoPoint(13.979308, -89.566619), "Depósito de Basura");
+
+
+        addMarker(new GeoPoint(13.979186, -89.566012), "Depósito de Basura");
+
+
+        addMarker(new GeoPoint(13.980037, -89.566322), "Depósito de Basura");
+
+
+        addMarker(new GeoPoint(13.979495, -89.565734), "Depósito de Basura");
+
+
+        addMarker(new GeoPoint(13.980161, -89.564466), "Depósito de Basura");
+
+
+        addMarker(new GeoPoint(13.980378, -89.563370), "Depósito de Basura");
+
+        addMarker(new GeoPoint(13.976941, -89.567148), "Depósito de Basura ");
 
         return view;
     }
